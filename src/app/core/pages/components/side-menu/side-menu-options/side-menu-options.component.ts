@@ -12,12 +12,6 @@ export class SideMenuOptionsComponent {
     menuOptions: MenuOptionInterface[] = [
         {
             icon: 'fa-solid fa-magnifying-glass',
-            label: 'Buscador',
-            sublabel: 'Buscar pantallas',
-            route: '/home',
-        },
-                {
-            icon: 'fa-solid fa-magnifying-glass',
             label: 'To Do List',
             sublabel: 'Lista de pendientes',
             route: '/home/todo-list',
