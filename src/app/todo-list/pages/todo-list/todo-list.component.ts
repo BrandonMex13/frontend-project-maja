@@ -135,22 +135,25 @@ export class TodoListComponent implements OnInit {
             confirmButtonText: "Confirmar",
             cancelButtonText: "Cancelar"
         }).then((result: any) => {
-            this.actividadesApi.eliminarActividadPrincipal(act.id).subscribe({
-                next: () => {
-                    if (this.actividadSeleccionada()?.id === act.id) {
-                        this.actividadSeleccionada.set(null);
-                    }
-                    this.cargarActividades();
-                },
-                error: (err: HttpErrorResponse) => {
-                    this.error.set(this.mensajeHttp(err, 'No se pudo eliminar la actividad.'));
-                },
-            });
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Actividad eliminada",
+                    icon: "success"
+                }).then(() => {
+                    this.actividadesApi.eliminarActividadPrincipal(act.id).subscribe({
+                        next: () => {
+                            if (this.actividadSeleccionada()?.id === act.id) {
+                                this.actividadSeleccionada.set(null);
+                            }
+                            this.cargarActividades();
+                        },
+                        error: (err: HttpErrorResponse) => {
+                            this.error.set(this.mensajeHttp(err, 'No se pudo eliminar la actividad.'));
+                        },
+                    });
+                });
+            }
 
-            if (result.isConfirmed) Swal.fire({
-                title: "Actividad eliminada",
-                icon: "success"
-            });
         });
     }
 
@@ -209,25 +212,27 @@ export class TodoListComponent implements OnInit {
             cancelButtonColor: "#d33",
             confirmButtonText: "Confirmar",
             cancelButtonText: "Cancelar"
-        }).then(() => {
-            this.actividadesApi.eliminarSubActividad(id).subscribe({
-                next: () => {
-                    this.cargarActividades();
+        }).then((result) => {
 
-                    Swal.fire({
-                        title: "Actividad eliminada",
-                        icon: "success"
-                    });
-                },
-                error: (err: HttpErrorResponse) => {
-                    this.error.set(this.mensajeHttp(err, 'No se pudo eliminar la sub-actividad.'));
-                    Swal.fire({
-                        title: "No se pudo eliminar la sub-actividad",
-                        icon: "error"
-                    });
-                },
-            });
+            if (result.isConfirmed) {
+                this.actividadesApi.eliminarSubActividad(id).subscribe({
+                    next: () => {
+                        this.cargarActividades();
 
+                        Swal.fire({
+                            title: "Actividad eliminada",
+                            icon: "success"
+                        });
+                    },
+                    error: (err: HttpErrorResponse) => {
+                        this.error.set(this.mensajeHttp(err, 'No se pudo eliminar la sub-actividad.'));
+                        Swal.fire({
+                            title: "No se pudo eliminar la sub-actividad",
+                            icon: "error"
+                        });
+                    },
+                });
+            }
         });
     }
 
