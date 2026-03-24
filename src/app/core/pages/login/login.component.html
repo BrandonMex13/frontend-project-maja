@@ -1,0 +1,39 @@
+<div class="min-h-screen flex items-center justify-center bg-slate-100 px-4">
+    <div class="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg border border-slate-200">
+        <h1 class="text-2xl font-semibold text-slate-800 mb-1">Iniciar sesión</h1>
+        <p class="text-sm text-slate-500 mb-6"></p>
+
+        <form [formGroup]="formulario" (ngSubmit)="enviar()" class="flex flex-col gap-4">
+            <div>
+                <label for="correo" class="block text-sm font-medium text-slate-700 mb-1">Correo</label>
+                <input id="correo" type="email" formControlName="correo" autocomplete="username"
+                    class="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                @if (formulario.controls.correo.touched && formulario.controls.correo.invalid) {
+                    <p class="text-red-600 text-xs mt-1">Correo no válido.</p>
+                }
+            </div>
+
+            <div>
+                <label for="contrasena" class="block text-sm font-medium text-slate-700 mb-1">Contraseña</label>
+                <input id="contrasena" type="password" formControlName="contrasena" autocomplete="current-password"
+                    class="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                @if (formulario.controls.contrasena.touched && formulario.controls.contrasena.invalid) {
+                    <p class="text-red-600 text-xs mt-1">La contraseña es obligatoria.</p>
+                }
+            </div>
+
+            @if (errorMensaje(); as err) {
+            <p class="text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">{{ err }}</p>
+            }
+
+            <button type="submit" [disabled]="cargando()"
+                class="mt-2 rounded-lg bg-blue-600 text-white font-medium py-2.5 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed">
+                @if (cargando()) {
+                    Entrando…
+                } @else {
+                    Entrar
+                }
+            </button>
+        </form>
+    </div>
+</div>

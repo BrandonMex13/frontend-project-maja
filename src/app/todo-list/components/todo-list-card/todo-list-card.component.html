@@ -1,0 +1,46 @@
+@let actividadUsuario = actividad();
+<div class="flex flex-wrap place-items-center">
+    <div class="shadow-lg rounded-xl w-full max-w-md p-4 bg-white relative overflow-hidden border transition cursor-pointer text-left"
+        [class.ring-2]="seleccionada()" [class.ring-blue-500]="seleccionada()"
+        [class.border-slate-200]="!seleccionada()" (click)="seleccionar()" (keydown.enter)="seleccionar()"
+        (keydown.space)="$event.preventDefault(); seleccionar()" tabindex="0" role="button">
+        <div class="flex items-center border-b border-slate-200 mb-2 py-2 gap-3">
+            <div
+                class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-sm font-semibold shrink-0">
+                {{ actividadUsuario.usuarioAsignado.nombre.charAt(0).toUpperCase() }}
+            </div>
+            <div class="min-w-0 flex-1">
+                <div class="font-medium text-slate-800 truncate">{{ actividadUsuario.usuarioAsignado.nombre }}</div>
+                <div class="text-slate-500 text-sm truncate">{{ actividadUsuario.usuarioAsignado.correo }}</div>
+            </div>
+            <span class="text-xs font-medium px-2 py-0.5 rounded-full shrink-0"
+                [class.bg-slate-100]="actividadUsuario.estado === 'abierta'" [class.text-slate-700]="actividadUsuario.estado === 'abierta'"
+                [class.bg-amber-100]="actividadUsuario.estado === 'en_progreso'" [class.text-amber-800]="actividadUsuario.estado === 'en_progreso'"
+                [class.bg-emerald-100]="actividadUsuario.estado === 'completada'" [class.text-emerald-800]="actividadUsuario.estado === 'completada'"
+                [class.bg-rose-100]="actividadUsuario.estado === 'cancelada'" [class.text-rose-800]="actividadUsuario.estado === 'cancelada'">
+                {{ textoEstado(actividadUsuario.estado) }}
+            </span>
+        </div>
+
+        <div class="w-full">
+            <p class="text-slate-500 text-xs font-medium mb-1">Actividad principal</p>
+            <p class="text-slate-900 text-lg font-semibold mb-2 leading-snug">{{ actividadUsuario.titulo }}</p>
+            @if (actividadUsuario.descripcion) {
+                <p class="text-slate-500 text-sm mb-3 line-clamp-3">{{ actividadUsuario.descripcion }}</p>
+            }
+        </div>
+
+        <div class="flex items-center justify-between my-2 gap-2">
+            <p class="text-slate-500 text-sm">
+                {{ actividadUsuario.progreso.hechas }}/{{ actividadUsuario.progreso.total }} sub-actividades · {{ actividadUsuario.progreso.porcentaje }}%
+            </p>
+            <button type="button" class="text-xs text-red-600 hover:underline shrink-0" (click)="eliminar($event)">
+                Eliminar
+            </button>
+        </div>
+
+        <div class="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+            <div class="h-full bg-blue-600 rounded-full transition-all" [style.width.%]="actividadUsuario.progreso.porcentaje"></div>
+        </div>
+    </div>
+</div>
